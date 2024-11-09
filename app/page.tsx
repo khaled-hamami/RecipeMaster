@@ -1,12 +1,18 @@
-"use client";
-
+import { auth, signIn } from "@/auth";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { ChefHat } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-export default function Page() {
+
+
+export default async function Page() {
+  const session = await auth();
+
+  if (session && session.user) {
+    return redirect("/recipes");
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-100 to-yellow-100 flex flex-col items-center justify-center p-4">
       <header className="text-center mb-8">
@@ -24,8 +30,14 @@ export default function Page() {
           <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
             Login
           </h2>
-          <form className="space-y-4">
-            <div className="space-y-2">
+          <form
+            className="space-y-4"
+            action={async () => {
+              "use server";
+              await signIn("google", { redirectTo: "/recipes" });
+            }}
+          >
+            {/* <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
@@ -46,7 +58,7 @@ export default function Page() {
                 autoComplete="current-password"
                 // onChange={(event) => setPassword(event.target.value)}
               />
-            </div>
+            </div> */}
             <Button
               type="submit"
               className="w-full bg-orange-500 hover:bg-orange-600 font-bold"

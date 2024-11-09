@@ -4,8 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { ChefHat, Settings } from "lucide-react";
-
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 //mock data
 const recipes = [
@@ -50,12 +51,29 @@ const truncateText = (text: string, maxLength: number) => {
 
 export default function RecipePage() {
   const router = useRouter();
+  const { data: session, status } = useSession();
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  if (!session) {
+    return redirect("/");
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center justify-center">
         <ChefHat className="h-12 w-12 text-orange-500 mr-2" />
         <h1 className="text-4xl font-bold text-orange-800">RecipeMaster</h1>
       </div>
+      <Button
+        onClick={() => {
+          signOut();
+        }}
+      >
+        Sign Out
+      </Button>
       <div className="w-full   my-4 flex justify-end">
         <Button
           variant="outline"
