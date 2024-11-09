@@ -1,12 +1,11 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { ChefHat, Settings } from "lucide-react";
-import { redirect, useRouter } from "next/navigation";
-import { signOut } from "next-auth/react";
+import { ChefHat } from "lucide-react";
+import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
+import Navbar from "@/components/navbar";
 
 //mock data
 const recipes = [
@@ -50,7 +49,6 @@ const truncateText = (text: string, maxLength: number) => {
 };
 
 export default function RecipePage() {
-  const router = useRouter();
   const { data: session, status } = useSession();
 
   if (status === "loading") {
@@ -65,31 +63,10 @@ export default function RecipePage() {
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center justify-center">
         <ChefHat className="h-12 w-12 text-orange-500 mr-2" />
-        <h1 className="text-4xl font-bold text-orange-800">RecipeMaster</h1>
+        <h1 className="text-4xl font-bold text-orange-800">Recipe Master</h1>
       </div>
-      <Button
-        onClick={() => {
-          signOut();
-        }}
-      >
-        Sign Out
-      </Button>
-      <div className="w-full   my-4 flex justify-end">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => router.push("/settings")}
-        >
-          <Settings className="h-4 w-4" />
-        </Button>
-      </div>
-      <div className="mb-8">
-        <Input
-          type="search"
-          placeholder="Search recipes..."
-          className="w-full"
-        />
-      </div>
+
+      <Navbar />
 
       <div className="mb-8">
         <Image

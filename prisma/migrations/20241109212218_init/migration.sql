@@ -6,6 +6,8 @@ CREATE TABLE "User" (
     "emailVerified" DATETIME,
     "image" TEXT,
     "roles" TEXT NOT NULL DEFAULT 'user',
+    "diplomas" BLOB,
+    "cv" BLOB,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL
 );
