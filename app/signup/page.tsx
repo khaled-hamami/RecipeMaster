@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ChefHat } from "lucide-react";
 import Link from "next/link";
+// import { redirect } from "next/navigation";
+// import { useState } from "react";
 
 export default function Page() {
   return (
@@ -22,9 +24,20 @@ export default function Page() {
       <main className="w-full max-w-md">
         <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
           <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
-            Login
+            Sign Up
           </h2>
           <form className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="fullName">Full Name</Label>
+              <Input
+                id="fullName"
+                type="text"
+                placeholder="John Doe"
+                required
+                autoComplete="name"
+                // onChange={(event) => setFullName(event.target.value)}
+              />
+            </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -41,8 +54,8 @@ export default function Page() {
               <Input
                 id="password"
                 type="password"
-                required
                 placeholder="********"
+                required
                 autoComplete="current-password"
                 // onChange={(event) => setPassword(event.target.value)}
               />
@@ -52,18 +65,10 @@ export default function Page() {
               className="w-full bg-orange-500 hover:bg-orange-600 font-bold"
               // onClick={handleSubmit}
             >
-              Sign In
+              Sign Up
             </Button>
             {/* {error && <p className="text-red-600 text-sm ">{error}</p>} */}
           </form>
-          <div className="mt-4 text-center">
-            <Link
-              href="/forgotPassword"
-              className="text-sm text-orange-600 hover:underline"
-            >
-              Forgot password?
-            </Link>
-          </div>
         </div>
 
         <div className="bg-white shadow-lg rounded-lg p-6">
@@ -83,9 +88,9 @@ export default function Page() {
         </div>
 
         <p className="mt-8 text-center text-gray-600">
-          Dont have an account?
-          <Link href="/signup" className="text-orange-600 hover:underline">
-            Sign up now
+          Already have an account?
+          <Link href="/" className="text-orange-600 hover:underline">
+            Sign in
           </Link>
         </p>
       </main>
@@ -97,33 +102,34 @@ export default function Page() {
   );
 }
 
+// const [fullName, setFullName] = useState("");
 // const [email, setEmail] = useState("");
 // const [password, setPassword] = useState("");
 // const [error, setError] = useState("");
 
-// const handleSubmit = async (event: React.FormEvent) => {
-//   event.preventDefault();
+// // const handleSubmit = async (event: React.FormEvent) => {
+// //   event.preventDefault();
+// //   try {
+// //     if (!fullName || !email || !password)
+// //       return setError("Please fill in all fields");
 
-//   try {
-//     if (!email || !password) return setError("Please fill in all fields");
+// //     const response = await fetch("/api/signup", {
+// //       method: "POST",
+// //       headers: {
+// //         "Content-Type": "application/json",
+// //       },
+// //       body: JSON.stringify({ fullName, email, password }),
+// //     });
+// //     console.log(fullName, email, password);
 
-//     console.log(email, password);
-//     const response = await fetch("/api/login", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({ email, password }),
-//     });
-
-//     if (response.ok) {
-//       //TODO set the global user state
-//       redirect("/recipes");
-//     } else {
-//       console.error("Login failed");
-//       setError("something went wrong, please try again");
-//     }
-//   } catch (error) {
-//     console.error("An error occurred during login, please try again", error);
-//     setError("an error occurred during login, please try again");
-//   }
+// //     if (response.ok) {
+// //       console.log("Signup successful");
+// //       console.log(response);
+// //       redirect("/");
+// //     } else {
+// //       console.error("Signup failed");
+// //     }
+// //   } catch (error) {
+// //     console.error("An error occurred during signup, please try again", error);
+// //   }
+// // };
