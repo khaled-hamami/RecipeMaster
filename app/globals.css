@@ -12,7 +12,6 @@ body {
   }
 }
 
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -68,4 +67,20 @@ body {
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+}
+
+.tagsInput {
+  @apply border border-black bg-background text-black placeholder-muted-foreground placeholder:text-xs rounded-md p-1 text-xs;
+
+  &:hover {
+    @apply border-black;
+  }
+}
+
+.tag {
+  @apply bg-accent text-accent-foreground px-1 py-0.5 rounded-md mr-1 text-xs;
+}
+
+.tagRemove {
+  @apply ml-1 cursor-pointer text-destructive text-xs;
 }

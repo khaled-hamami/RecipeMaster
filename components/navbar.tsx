@@ -40,7 +40,7 @@ const Navbar = () => {
                   <ChefHat />
                   Request chef account
                 </Button>
-                <Button>
+                <Button onClick={() => redirect("addRecipe")}>
                   <Plus /> Add Recipe
                 </Button>
               </div>
