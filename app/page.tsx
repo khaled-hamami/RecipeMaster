@@ -37,36 +37,13 @@ export default async function Page() {
               await signIn("google", { redirectTo: "/recipes" });
             }}
           >
-            {/* <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                required
-                placeholder="you@example.com"
-                autoComplete="email"
-                // onChange={(event) => setEmail(event.target.value)}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                required
-                placeholder="********"
-                autoComplete="current-password"
-                // onChange={(event) => setPassword(event.target.value)}
-              />
-            </div> */}
+           
             <Button
               type="submit"
               className="w-full bg-orange-500 hover:bg-orange-600 font-bold"
-              // onClick={handleSubmit}
             >
               Sign In
             </Button>
-            {/* {error && <p className="text-red-600 text-sm ">{error}</p>} */}
           </form>
           <div className="mt-4 text-center">
             <Link
@@ -108,34 +85,3 @@ export default async function Page() {
     </div>
   );
 }
-
-// const [email, setEmail] = useState("");
-// const [password, setPassword] = useState("");
-// const [error, setError] = useState("");
-
-// const handleSubmit = async (event: React.FormEvent) => {
-//   event.preventDefault();
-
-//   try {
-//     if (!email || !password) return setError("Please fill in all fields");
-
-//     console.log(email, password);
-//     const response = await fetch("/api/login", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({ email, password }),
-//     });
-
-//     if (response.ok) {
-//       //TODO set the global user state
-//       redirect("/recipes");
-//     } else {
-//       console.error("Login failed");
-//       setError("something went wrong, please try again");
-//     }
-//   } catch (error) {
-//     console.error("An error occurred during login, please try again", error);
-//     setError("an error occurred during login, please try again");
-//   }

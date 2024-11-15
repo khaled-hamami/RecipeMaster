@@ -51,7 +51,7 @@ const initialRecipes = [
 
 export default function ProfilePage() {
   const { data: session, status } = useSession();
-  const [user, setUser] = useState(session?.user || { name: "", image: "" });
+  const [user, setUser] = useState(session?.user);
   const [recipes, setRecipes] = useState(initialRecipes);
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -76,7 +76,7 @@ export default function ProfilePage() {
         },
         body: JSON.stringify({
           email: session?.user?.email,
-          name: user.name,
+          name: user?.image,
         }),
       });
 
@@ -147,7 +147,7 @@ export default function ProfilePage() {
                   <AvatarImage
                     src={user?.image || "https://via.placeholder.com/150"}
                     alt={user?.name || "Default Image"}
-                  />
+                    />
                   <AvatarFallback>
                     <User className="w-12 h-12" />
                   </AvatarFallback>
