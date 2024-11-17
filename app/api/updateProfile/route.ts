@@ -1,4 +1,3 @@
-// app/api/updateProfile/route.ts
 
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
@@ -17,8 +16,3 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Failed to update user profile' }, { status: 500 });
   }
 }
-
-
-//deleting the profile
-
-

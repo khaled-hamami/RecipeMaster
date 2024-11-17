@@ -5,8 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ChefHat } from "lucide-react";
 import Link from "next/link";
-// import { redirect } from "next/navigation";
-// import { useState } from "react";
+
 
 export default function Page() {
   return (
@@ -35,7 +34,6 @@ export default function Page() {
                 placeholder="John Doe"
                 required
                 autoComplete="name"
-                // onChange={(event) => setFullName(event.target.value)}
               />
             </div>
             <div className="space-y-2">
@@ -46,7 +44,6 @@ export default function Page() {
                 required
                 placeholder="you@example.com"
                 autoComplete="email"
-                // onChange={(event) => setEmail(event.target.value)}
               />
             </div>
             <div className="space-y-2">
@@ -57,17 +54,14 @@ export default function Page() {
                 placeholder="********"
                 required
                 autoComplete="current-password"
-                // onChange={(event) => setPassword(event.target.value)}
               />
             </div>
             <Button
               type="submit"
               className="w-full bg-orange-500 hover:bg-orange-600 font-bold"
-              // onClick={handleSubmit}
             >
               Sign Up
             </Button>
-            {/* {error && <p className="text-red-600 text-sm ">{error}</p>} */}
           </form>
         </div>
 
@@ -102,34 +96,3 @@ export default function Page() {
   );
 }
 
-// const [fullName, setFullName] = useState("");
-// const [email, setEmail] = useState("");
-// const [password, setPassword] = useState("");
-// const [error, setError] = useState("");
-
-// // const handleSubmit = async (event: React.FormEvent) => {
-// //   event.preventDefault();
-// //   try {
-// //     if (!fullName || !email || !password)
-// //       return setError("Please fill in all fields");
-
-// //     const response = await fetch("/api/signup", {
-// //       method: "POST",
-// //       headers: {
-// //         "Content-Type": "application/json",
-// //       },
-// //       body: JSON.stringify({ fullName, email, password }),
-// //     });
-// //     console.log(fullName, email, password);
-
-// //     if (response.ok) {
-// //       console.log("Signup successful");
-// //       console.log(response);
-// //       redirect("/");
-// //     } else {
-// //       console.error("Signup failed");
-// //     }
-// //   } catch (error) {
-// //     console.error("An error occurred during signup, please try again", error);
-// //   }
-// // };

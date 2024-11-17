@@ -11,11 +11,11 @@ const Navbar = () => {
   const pathname = usePathname();
 
   return (
-    <div className="sticky top-0 z-10 bg-white bg-opacity-75 backdrop-blur-md py-1 rounded-b-lg">
+    <div className="sticky my-2 top-0 z-10 bg-transparent bg-opacity-75 backdrop-blur-md py-1 rounded-b-lg">
       <div className="w-full my-4 flex justify-between">
         <Popover>
           <PopoverTrigger>
-            <SquareMenu className="h-5 w-6 ml-5" />
+            <SquareMenu className="h-5 w-6 ml-5 text-primary" />
           </PopoverTrigger>
           <PopoverContent>
             <div className="grid gap-4">
@@ -29,6 +29,11 @@ const Navbar = () => {
                 {pathname == "/recipes" && (
                   <Button onClick={() => redirect("/profile")}>
                     <User /> Profile
+                  </Button>
+                )}
+                {pathname == "/addRecipe" && (
+                  <Button onClick={() => redirect("/recipes")}>
+                    <CookingPot /> Recipes
                   </Button>
                 )}
                 {pathname == "/profile" && (
@@ -62,7 +67,7 @@ const Navbar = () => {
           <Input
             type="search"
             placeholder="Search recipes..."
-            className="w-full"
+            className="w-full border-orange-400"
           />
         </div>
       )}

@@ -14,7 +14,7 @@ export default async function Page() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-orange-100 to-yellow-100 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-b from-orange-200 to-yellow-200 flex flex-col items-center justify-center p-4">
       <header className="text-center mb-8">
         <div className="flex items-center justify-center mb-4">
           <ChefHat className="h-12 w-12 text-orange-500 mr-2" />

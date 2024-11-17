@@ -60,7 +60,7 @@ export default function RecipePage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-orange-200 to-yellow-200">
       <div className="flex items-center justify-center">
         <ChefHat className="h-12 w-12 text-orange-500 mr-2" />
         <h1 className="text-4xl font-bold text-orange-800">Recipe Master</h1>
@@ -85,7 +85,7 @@ export default function RecipePage() {
         {recipes.map((recipe) => (
           <div
             key={recipe.id}
-            className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center border-b pb-6"
+            className="grid grid-cols-1 bg-white md:grid-cols-3 gap-4 items-center border-b pb-6"
           >
             <Image
               src={recipe.image}

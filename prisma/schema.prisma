@@ -1,33 +1,50 @@
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
- 
+
 generator client {
   provider = "prisma-client-js"
 }
 
+enum Role {
+  ADMIN
+  USER
+  CHEF
+}
 
- 
 model User {
-  id            String          @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String?
-  email         String?         @unique
+  email         String?   @unique
   emailVerified DateTime?
   image         String?
-  roles         String @default("user")
-  diplomas      Bytes?          
-  cv            Bytes?          
+  role          Role      @default(USER)
+  diplomas      Bytes?
+  cv            Bytes?
+  recipes       Recipe[]
+
   accounts      Account[]
   sessions      Session[]
-  // Optional for WebAuthn support
   Authenticator Authenticator[]
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
+model Recipe {
+  id           String   @id @default(cuid())
+  name         String
+  description  String
+  images        Bytes
+  ingredients  String[]
+  instructions String
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
 
 model Account {
   id                String  @id @default(cuid())
@@ -42,35 +59,34 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
- 
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@unique([provider, providerAccountId])
 }
- 
+
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
- 
+
 model VerificationToken {
   identifier String
   token      String
   expires    DateTime
- 
+
   @@unique([identifier, token])
 }
- 
-// Optional for WebAuthn support
+
 model Authenticator {
   credentialID         String  @unique
   userId               String
@@ -80,9 +96,8 @@ model Authenticator {
   credentialDeviceType String
   credentialBackedUp   Boolean
   transports           String?
- 
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@id([userId, credentialID])
 }
-

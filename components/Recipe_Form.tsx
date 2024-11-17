@@ -1,10 +1,9 @@
 "use client";
+
 import { useState } from "react";
-import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -25,18 +24,14 @@ import {
   FileUploaderItem,
 } from "@/components/ui/file-upload";
 import TagInput from "./ui/tag-input";
-
-const formSchema = z.object({
-  name: z.string().nonempty("Name is required"),
-  Description: z.string().nonempty("Description is required"),
-  Images: z.instanceof(Uint8Array).refine((data) => data.length > 0, {
-    message: "Images are required",
-  }),
-  Ingredients: z.array(z.string()).nonempty("Please add at least one item"),
-  instructions: z.string().nonempty("Instructions are required"),
-});
+import { formSchema } from "@/Schemas/RecipeSchema";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 export default function Recipe_Form() {
+  const { toast } = useToast();
+  const router = useRouter();
+
   const [files, setFiles] = useState<File[] | null>(null);
 
   const dropZoneConfig = {
@@ -52,38 +47,61 @@ export default function Recipe_Form() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      Description: "",
-      Images: new Uint8Array(),
-      Ingredients: ["tomato"],
+      description: "",
+      images: new Uint8Array(),
+      ingredients: ["tomato"],
       instructions: "",
     },
   });
 
- const handleFileChange = async (files: File[]) => {
-  setFiles(files);
-  if (files.length > 0) {
-    const file = files[0];
-    const imageBytes = await file.arrayBuffer();
-    form.setValue("Images", new Uint8Array(imageBytes));
-  } else {
-    form.setValue("Images", new Uint8Array());
-  }
-};
+  const handleFileChange = async (files: File[]) => {
+    setFiles(files);
+    if (files.length > 0) {
+      const file = files[0];
+      const imageBytes = await file.arrayBuffer();
+      form.setValue("images", new Uint8Array(imageBytes));
+    } else {
+      form.setValue("images", new Uint8Array());
+    }
+  };
 
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
+      const response = await fetch("/api/createRecipe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+      if (response.status == 200) {
+        toast({
+          title: "Recipe created",
+          description: "Your recipe has been created successfully.",
+          className: "bg-primary",
+        });
+        router.push("/profile");
+      } else {
+        toast({
+          title: "Failed to create recipe",
+          description: "An error occurred while creating your recipe.",
+          variant: "destructive",
+        });
+        console.error(
+          "Failed to create recipe",
+          response.statusText,
+          response.status
+        );
+      }
     } catch (error) {
       console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
+      toast({
+        title: "Failed to create recipe",
+        description: "An error occurred while communicating with the server.",
+        variant: "destructive",
+      });
     }
-  }
+  };
 
   return (
     <Form {...form}>
@@ -110,7 +128,7 @@ export default function Recipe_Form() {
 
         <FormField
           control={form.control}
-          name="Description"
+          name="description"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Description</FormLabel>
@@ -131,8 +149,8 @@ export default function Recipe_Form() {
 
         <FormField
           control={form.control}
-          name="Images"
-          render={({ field }) => (
+          name="images"
+          render={() => (
             <FormItem>
               <FormLabel>Images</FormLabel>
               <FormControl>
@@ -179,7 +197,7 @@ export default function Recipe_Form() {
 
         <FormField
           control={form.control}
-          name="Ingredients"
+          name="ingredients"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Ingredients</FormLabel>

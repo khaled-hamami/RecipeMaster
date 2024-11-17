@@ -76,7 +76,7 @@ export default function ProfilePage() {
         },
         body: JSON.stringify({
           email: session?.user?.email,
-          name: user?.image,
+          name: user?.name,
         }),
       });
 
@@ -125,6 +125,7 @@ export default function ProfilePage() {
   }
   if (!session) redirect("/");
 
+
   return (
     <div className="container mx-auto px-4 py-8">
       <Navbar />
@@ -147,7 +148,7 @@ export default function ProfilePage() {
                   <AvatarImage
                     src={user?.image || "https://via.placeholder.com/150"}
                     alt={user?.name || "Default Image"}
-                    />
+                  />
                   <AvatarFallback>
                     <User className="w-12 h-12" />
                   </AvatarFallback>
