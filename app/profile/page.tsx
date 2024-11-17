@@ -31,28 +31,16 @@ import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { redirect } from "next/navigation";
 
-const initialRecipes = [
-  {
-    id: 1,
-    title: "Spaghetti Carbonara",
-    description: "A classic Italian pasta dish.",
-  },
-  {
-    id: 2,
-    title: "Chicken Tikka Masala",
-    description: "A flavorful Indian curry.",
-  },
-  {
-    id: 3,
-    title: "Chocolate Chip Cookies",
-    description: "Delicious homemade cookies.",
-  },
-];
-
 export default function ProfilePage() {
+  type recipeType = {
+    id: string;
+    name: string;
+    description: string;
+  };
   const { data: session, status } = useSession();
   const [user, setUser] = useState(session?.user);
-  const [recipes, setRecipes] = useState(initialRecipes);
+  const [recipes, setRecipes] = useState<recipeType[]>([]);
+
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -120,11 +108,36 @@ export default function ProfilePage() {
       setIsLoading(false);
     }
   };
+
+  const getUserRecipes = async () => {
+    try {
+      const response = await fetch("/api/getUserRecipes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: session?.user?.id,
+        }),
+      });
+      if (!response.ok || response.status !== 200) {
+        throw new Error("Failed to get user recipes");
+      }
+      const data = await response.json();
+      console.log(data);
+      setRecipes(data);
+    } catch (err) {
+      console.error("Failed to get user recipes", err);
+    }
+  };
+  useEffect(() => {
+    getUserRecipes();
+  }, []);
+
   if (status === "loading") {
     return <div>Loading...</div>;
   }
   if (!session) redirect("/");
-
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -217,7 +230,7 @@ export default function ProfilePage() {
                 {recipes.map((recipe) => (
                   <Card key={recipe.id}>
                     <CardHeader>
-                      <CardTitle className="text-lg">{recipe.title}</CardTitle>
+                      <CardTitle className="text-lg">{recipe.name}</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <p>{recipe.description}</p>
@@ -230,7 +243,7 @@ export default function ProfilePage() {
               </div>
             </CardContent>
             <CardFooter>
-              <Button className="w-full">
+              <Button className="w-full" onClick={() => redirect("/addRecipe")}>
                 <ChefHat className="mr-2 h-4 w-4" />
                 Create New Recipe
               </Button>

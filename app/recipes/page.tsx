@@ -6,42 +6,7 @@ import { ChefHat } from "lucide-react";
 import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Navbar from "@/components/navbar";
-
-//mock data
-const recipes = [
-  {
-    id: 1,
-    name: "Spaghetti Carbonara",
-    chef: "Gordon Ramsay",
-    image: "/placeholder.svg?height=100&width=200",
-    description:
-      "A classic Italian pasta dish with eggs, cheese, pancetta, and pepper. The creamy sauce is made without cream, using only eggs and cheese.",
-  },
-  {
-    id: 2,
-    name: "Chicken Tikka Masala",
-    chef: "Jamie Oliver",
-    image: "/placeholder.svg?height=100&width=200",
-    description:
-      "A flavorful curry dish with marinated grilled chicken in a creamy tomato sauce. It's a perfect blend of Indian and British cuisine.",
-  },
-  {
-    id: 3,
-    name: "Caesar Salad",
-    chef: "Ina Garten",
-    image: "/placeholder.svg?height=100&width=200",
-    description:
-      "A refreshing salad with romaine lettuce, croutons, parmesan cheese, and a creamy dressing. It's named after its creator, Caesar Cardini.",
-  },
-  {
-    id: 4,
-    name: "Beef Bourguignon",
-    chef: "Julia Child",
-    image: "/placeholder.svg?height=100&width=200",
-    description:
-      "A hearty French stew made with beef braised in red wine, beef broth, and flavored with garlic, onions, and a bouquet garni.",
-  },
-];
+import { useEffect, useState } from "react";
 
 const truncateText = (text: string, maxLength: number) => {
   if (text.length <= maxLength) return text;
@@ -49,7 +14,30 @@ const truncateText = (text: string, maxLength: number) => {
 };
 
 export default function RecipePage() {
+  type recipeType = {
+    id: string;
+    name: string;
+    description: string;
+    images: number[];
+    userId: string;
+  };
+
+  useEffect(() => {
+    getAllRecipes().then((data) => {
+      setRecipes(data);
+      console.log(data);
+    });
+  }, []);
+
+  const [recipes, setRecipes] = useState<recipeType[]>([]);
+
   const { data: session, status } = useSession();
+
+  const getAllRecipes = async () => {
+    const response = await fetch("/api/getAllRecipes");
+    const data = await response.json();
+    return data;
+  };
 
   if (status === "loading") {
     return <div>Loading...</div>;
@@ -88,7 +76,9 @@ export default function RecipePage() {
             className="grid grid-cols-1 bg-white md:grid-cols-3 gap-4 items-center border-b pb-6"
           >
             <Image
-              src={recipe.image}
+              src={`data:image/png;base64,${Buffer.from(recipe.images).toString(
+                "base64"
+              )}`}
               alt={recipe.name}
               className="w-full h-[100px] object-cover rounded-md"
               width={100}
@@ -96,7 +86,9 @@ export default function RecipePage() {
             />
             <div className="md:col-span-2">
               <h3 className="font-semibold text-lg">{recipe.name}</h3>
-              <p className="text-sm text-muted-foreground">by {recipe.chef}</p>
+              <p className="text-sm text-muted-foreground">
+                by {recipe.userId}
+              </p>
               <p className="mt-2">
                 {truncateText(recipe.description, 100)}
                 {recipe.description.length > 100 && (

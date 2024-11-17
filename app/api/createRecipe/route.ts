@@ -32,11 +32,11 @@ export async function POST(req: NextRequest) {
       },
     };
 
-    await prisma.recipe.create({
+    const newRecipe = await prisma.recipe.create({
       data: newRecipeData,
     });
 
-    return NextResponse.redirect("http://localhost:3000/profile");
+    return NextResponse.json(newRecipe, { status: 200 });
   } catch (error) {
     console.error("Failed to create recipe", error);
     return NextResponse.json(

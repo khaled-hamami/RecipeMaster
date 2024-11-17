@@ -32,6 +32,11 @@ const Navbar = () => {
                   </Button>
                 )}
                 {pathname == "/addRecipe" && (
+                  <Button onClick={() => redirect("/profile")}>
+                    <User /> Profile
+                  </Button>
+                )}
+                {pathname == "/addRecipe" && (
                   <Button onClick={() => redirect("/recipes")}>
                     <CookingPot /> Recipes
                   </Button>
@@ -45,9 +50,11 @@ const Navbar = () => {
                   <ChefHat />
                   Request chef account
                 </Button>
-                <Button onClick={() => redirect("addRecipe")}>
-                  <Plus /> Add Recipe
-                </Button>
+                {pathname != "/addRecipe" && (
+                  <Button onClick={() => redirect("addRecipe")}>
+                    <Plus /> Add Recipe
+                  </Button>
+                )}
               </div>
             </div>
           </PopoverContent>
