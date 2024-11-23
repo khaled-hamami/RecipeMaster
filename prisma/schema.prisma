@@ -13,6 +13,23 @@ enum Role {
   CHEF
 }
 
+enum State {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Request {
+  id       String @id @default(cuid())
+  userId   String
+  diplomas Bytes
+  cv       Bytes
+  state    State  @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -20,8 +37,6 @@ model User {
   emailVerified DateTime?
   image         String?
   role          Role      @default(USER)
-  diplomas      Bytes?
-  cv            Bytes?
   recipes       Recipe[]
 
   accounts      Account[]
@@ -36,7 +51,7 @@ model Recipe {
   id           String   @id @default(cuid())
   name         String
   description  String
-  images        Bytes
+  images       Bytes
   ingredients  String[]
   instructions String
   userId       String

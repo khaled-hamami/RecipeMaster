@@ -1,10 +1,10 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -13,26 +13,26 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { CloudUpload, Paperclip } from "lucide-react";
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { CloudUpload, Paperclip } from "lucide-react"
 import {
   FileInput,
   FileUploader,
   FileUploaderContent,
   FileUploaderItem,
-} from "@/components/ui/file-upload";
-import TagInput from "./ui/tag-input";
-import { formSchema } from "@/Schemas/RecipeSchema";
-import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
+} from "@/components/ui/file-upload"
+import TagInput from "./ui/tag-input"
+import { formSchema } from "@/Schemas/RecipeSchema"
+import { useToast } from "@/hooks/use-toast"
+import { useRouter } from "next/navigation"
 
 export default function Recipe_Form() {
-  const { toast } = useToast();
-  const router = useRouter();
+  const { toast } = useToast()
+  const router = useRouter()
 
-  const [files, setFiles] = useState<File[] | null>(null);
+  const [files, setFiles] = useState<File[] | null>(null)
 
   const dropZoneConfig = {
     maxFiles: 5,
@@ -41,7 +41,7 @@ export default function Recipe_Form() {
     accept: {
       "image/*": [".jpeg", ".jpg", ".png", ".gif", ".bmp", ".webp"],
     },
-  };
+  }
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,18 +52,18 @@ export default function Recipe_Form() {
       ingredients: ["tomato"],
       instructions: "",
     },
-  });
+  })
 
   const handleFileChange = async (files: File[]) => {
-    setFiles(files);
+    setFiles(files)
     if (files.length > 0) {
-      const file = files[0];
-      const imageBytes = await file.arrayBuffer();
-      form.setValue("images", new Uint8Array(imageBytes));
+      const file = files[0]
+      const imageBytes = await file.arrayBuffer()
+      form.setValue("images", new Uint8Array(imageBytes))
     } else {
-      form.setValue("images", new Uint8Array());
+      form.setValue("images", new Uint8Array())
     }
-  };
+  }
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -73,35 +73,30 @@ export default function Recipe_Form() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(values),
-      });
+      })
       if (response.status == 200) {
         toast({
           title: "Recipe created",
           description: "Your recipe has been created successfully.",
-          className: "bg-primary",
-        });
-        router.push("/profile");
+        })
+        router.push("/profile")
       } else {
         toast({
           title: "Failed to create recipe",
           description: "An error occurred while creating your recipe.",
           variant: "destructive",
-        });
-        console.error(
-          "Failed to create recipe",
-          response.statusText,
-          response.status
-        );
+        })
+        console.error("Failed to create recipe", response.statusText, response.status)
       }
     } catch (error) {
-      console.error("Form submission error", error);
+      console.error("Form submission error", error)
       toast({
         title: "Failed to create recipe",
         description: "An error occurred while communicating with the server.",
         variant: "destructive",
-      });
+      })
     }
-  };
+  }
 
   return (
     <Form {...form}>
@@ -118,9 +113,7 @@ export default function Recipe_Form() {
               <FormControl>
                 <Input placeholder="Healthy Soup......" type="" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
+              <FormDescription>This is your public display name.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -158,8 +151,8 @@ export default function Recipe_Form() {
                   value={files}
                   onValueChange={(files) => {
                     if (files) {
-                      setFiles(files);
-                      handleFileChange(files);
+                      setFiles(files)
+                      handleFileChange(files)
                     }
                   }}
                   dropzoneOptions={dropZoneConfig}
@@ -231,5 +224,5 @@ export default function Recipe_Form() {
         <Button type="submit">Submit</Button>
       </form>
     </Form>
-  );
+  )
 }
