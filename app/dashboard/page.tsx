@@ -10,6 +10,7 @@ import PendingRequests from "./pending-requests"
 import ApprovedRequests from "./approved-requests"
 import RejectedRequests from "./rejected-requests"
 import { RequestWithUserDetails } from "../types/requestWithUserDetails"
+import Navbar from "@/components/navbar"
 
 export default function DashboardPage() {
   const requests: RequestWithUserDetails[] = useGetAllRequests().data
@@ -34,24 +35,27 @@ export default function DashboardPage() {
       variant: "destructive",
     })
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="pending">Pending</TabsTrigger>
-          <TabsTrigger value="approved">Approved</TabsTrigger>
-          <TabsTrigger value="rejected">Rejected</TabsTrigger>
-        </TabsList>
-        <TabsContent value="pending">
-          <PendingRequests requests={pendingRequests} />
-        </TabsContent>
-        <TabsContent value="approved">
-          <ApprovedRequests requests={approvedRequests} />
-        </TabsContent>
-        <TabsContent value="rejected">
-          <RejectedRequests requests={rejectedRequests} />
-        </TabsContent>
-      </Tabs>
+    <div className="w-full bg-primary-to-white from-primary to-white min-h-screen">
+      <div className="container mx-auto p-6">
+        <Navbar />
+        <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="pending">Pending</TabsTrigger>
+            <TabsTrigger value="approved">Approved</TabsTrigger>
+            <TabsTrigger value="rejected">Rejected</TabsTrigger>
+          </TabsList>
+          <TabsContent value="pending">
+            <PendingRequests requests={pendingRequests} />
+          </TabsContent>
+          <TabsContent value="approved">
+            <ApprovedRequests requests={approvedRequests} />
+          </TabsContent>
+          <TabsContent value="rejected">
+            <RejectedRequests requests={rejectedRequests} />
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   )
 }

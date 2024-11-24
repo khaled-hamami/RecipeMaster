@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { RequestWithUserDetails } from "../types/requestWithUserDetails"
+import Image from "next/image"
 
 export default function ApprovedRequests({
   requests,
@@ -30,16 +31,20 @@ export default function ApprovedRequests({
           <CardContent>
             <p>User ID: {req.userId}</p>
             <div className="flex space-x-4 mt-4">
-              <img
+              <Image
                 src={`data:image/png;base64,${Buffer.from(req.cv).toString("base64")}`}
                 alt="CV"
+                width={96}
+                height={96}
                 className="w-24 h-24 object-cover"
               />
-              <img
+              <Image
                 src={`data:image/png;base64,${Buffer.from(req.diplomas).toString(
                   "base64"
                 )}`}
                 alt="Diploma"
+                width={96}
+                height={96}
                 className="w-24 h-24 object-cover"
               />
             </div>
