@@ -17,7 +17,6 @@ const fetchUserRecipes = async (userId: string) => {
 }
 
 export const useGetUserRecipes = (userId: string) => {
-  console.log("userID : ", userId)
   return useQuery({
     queryKey: ["userRecipes", userId],
     queryFn: () => fetchUserRecipes(userId),

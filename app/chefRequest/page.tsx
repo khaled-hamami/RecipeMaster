@@ -24,6 +24,7 @@ import {
 import { formSchema } from "@/Schemas/ChefRequestSchema"
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
+import Navbar from "@/components/navbar"
 
 export default function Page() {
   const router = useRouter()
@@ -89,7 +90,6 @@ export default function Page() {
           title: "Failed to submit the form",
           description: "An error occurred while submitting the form.",
           variant: "destructive",
-          
         })
         console.error("Form submission error", response.statusText, response.status)
       }
@@ -104,114 +104,117 @@ export default function Page() {
   }
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 max-w-3xl mx-auto py-10"
-      >
-        <FormField
-          control={form.control}
-          name="cv"
-          render={() => (
-            <FormItem>
-              <FormLabel>Select File</FormLabel>
-              <FormControl>
-                <FileUploader
-                  value={cvFile}
-                  onValueChange={(file) => {
-                    if (file) {
-                      setCvFile(file)
-                      handleCvFileChange(file)
-                    }
-                  }}
-                  dropzoneOptions={dropZoneConfig}
-                  className="relative bg-background rounded-lg p-2"
-                >
-                  <FileInput
-                    id="fileInput"
-                    className="outline-dashed outline-1 outline-slate-500"
+    <div className="w-full bg-primary-to-white from-primary to-white min-h-screen px-8 md:px-12 lg:px-20 ">
+      <Navbar />
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-8 max-w-3xl  mx-auto py-10"
+        >
+          <FormField
+            control={form.control}
+            name="cv"
+            render={() => (
+              <FormItem>
+                <FormLabel>Select File</FormLabel>
+                <FormControl>
+                  <FileUploader
+                    value={cvFile}
+                    onValueChange={(file) => {
+                      if (file) {
+                        setCvFile(file)
+                        handleCvFileChange(file)
+                      }
+                    }}
+                    dropzoneOptions={dropZoneConfig}
+                    className="relative bg-background rounded-lg p-2"
                   >
-                    <div className="flex items-center justify-center flex-col p-8 w-full ">
-                      <CloudUpload className="text-gray-500 w-10 h-10" />
-                      <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
-                        <span className="font-semibold">Click to upload</span>
-                        &nbsp; or drag and drop
-                      </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        SVG, PNG, JPG or GIF
-                      </p>
-                    </div>
-                  </FileInput>
-                  <FileUploaderContent>
-                    {cvFile &&
-                      cvFile.length > 0 &&
-                      cvFile.map((file, i) => (
-                        <FileUploaderItem key={i} index={i}>
-                          <Paperclip className="h-4 w-4 stroke-current" />
-                          <span>{file.name}</span>
-                        </FileUploaderItem>
-                      ))}
-                  </FileUploaderContent>
-                </FileUploader>
-              </FormControl>
-              <FormDescription>Select a file to upload.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                    <FileInput
+                      id="fileInput"
+                      className="outline-dashed outline-1 outline-slate-500"
+                    >
+                      <div className="flex items-center justify-center flex-col p-8 w-full ">
+                        <CloudUpload className="text-gray-500 w-10 h-10" />
+                        <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
+                          <span className="font-semibold">Click to upload</span>
+                          &nbsp; or drag and drop
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          SVG, PNG, JPG or GIF
+                        </p>
+                      </div>
+                    </FileInput>
+                    <FileUploaderContent>
+                      {cvFile &&
+                        cvFile.length > 0 &&
+                        cvFile.map((file, i) => (
+                          <FileUploaderItem key={i} index={i}>
+                            <Paperclip className="h-4 w-4 stroke-current" />
+                            <span>{file.name}</span>
+                          </FileUploaderItem>
+                        ))}
+                    </FileUploaderContent>
+                  </FileUploader>
+                </FormControl>
+                <FormDescription>Select a file to upload.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="diploma"
-          render={() => (
-            <FormItem>
-              <FormLabel>Select File</FormLabel>
-              <FormControl>
-                <FileUploader
-                  value={diplomaFile}
-                  onValueChange={(file) => {
-                    if (file) {
-                      setDiplomaFile(file)
-                      handleDiplomaFileChange(file)
-                    }
-                  }}
-                  dropzoneOptions={dropZoneConfig}
-                  className="relative bg-background rounded-lg p-2"
-                >
-                  <FileInput
-                    id="fileInput"
-                    className="outline-dashed outline-1 outline-slate-500"
+          <FormField
+            control={form.control}
+            name="diploma"
+            render={() => (
+              <FormItem>
+                <FormLabel>Select File</FormLabel>
+                <FormControl>
+                  <FileUploader
+                    value={diplomaFile}
+                    onValueChange={(file) => {
+                      if (file) {
+                        setDiplomaFile(file)
+                        handleDiplomaFileChange(file)
+                      }
+                    }}
+                    dropzoneOptions={dropZoneConfig}
+                    className="relative bg-background rounded-lg p-2"
                   >
-                    <div className="flex items-center justify-center flex-col p-8 w-full ">
-                      <CloudUpload className="text-gray-500 w-10 h-10" />
-                      <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
-                        <span className="font-semibold">Click to upload</span>
-                        &nbsp; or drag and drop
-                      </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        SVG, PNG, JPG or GIF
-                      </p>
-                    </div>
-                  </FileInput>
-                  <FileUploaderContent>
-                    {diplomaFile &&
-                      diplomaFile.length > 0 &&
-                      diplomaFile.map((file, i) => (
-                        <FileUploaderItem key={i} index={i}>
-                          <Paperclip className="h-4 w-4 stroke-current" />
-                          <span>{file.name}</span>
-                        </FileUploaderItem>
-                      ))}
-                  </FileUploaderContent>
-                </FileUploader>
-              </FormControl>
-              <FormDescription>Select a file to upload.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+                    <FileInput
+                      id="fileInput"
+                      className="outline-dashed outline-1 outline-slate-500"
+                    >
+                      <div className="flex items-center justify-center flex-col p-8 w-full ">
+                        <CloudUpload className="text-gray-500 w-10 h-10" />
+                        <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
+                          <span className="font-semibold">Click to upload</span>
+                          &nbsp; or drag and drop
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          SVG, PNG, JPG or GIF
+                        </p>
+                      </div>
+                    </FileInput>
+                    <FileUploaderContent>
+                      {diplomaFile &&
+                        diplomaFile.length > 0 &&
+                        diplomaFile.map((file, i) => (
+                          <FileUploaderItem key={i} index={i}>
+                            <Paperclip className="h-4 w-4 stroke-current" />
+                            <span>{file.name}</span>
+                          </FileUploaderItem>
+                        ))}
+                    </FileUploaderContent>
+                  </FileUploader>
+                </FormControl>
+                <FormDescription>Select a file to upload.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit">Submit</Button>
+        </form>
+      </Form>
+    </div>
   )
 }

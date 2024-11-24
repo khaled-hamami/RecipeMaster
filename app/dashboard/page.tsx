@@ -1,66 +1,38 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
+import { useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { PendingPosts } from './pending-posts'
-import { ApprovedPosts } from './approved-posts'
-import { RejectedPosts } from './rejected-posts'
-
-type Post = {
-  id: number
-  userId: string
-  userName: string
-  profilePic: string
-  cvUrl: string
-  diplomaUrl: string
-  status: 'pending' | 'approved' | 'rejected'
-}
-
-const allPosts: Post[] = [
-  {
-    id: 1,
-    userId: "user123",
-    userName: "John Doe",
-    profilePic: "/placeholder.svg?height=40&width=40",
-    cvUrl: "/placeholder.svg?height=100&width=100&text=CV",
-    diplomaUrl: "/placeholder.svg?height=100&width=100&text=Diploma",
-    status: 'pending'
-  },
-  {
-    id: 2,
-    userId: "user456",
-    userName: "Jane Smith",
-    profilePic: "/placeholder.svg?height=40&width=40",
-    cvUrl: "/placeholder.svg?height=100&width=100&text=CV",
-    diplomaUrl: "/placeholder.svg?height=100&width=100&text=Diploma",
-    status: 'approved'
-  },
-  {
-    id: 3,
-    userId: "user789",
-    userName: "Alice Johnson",
-    profilePic: "/placeholder.svg?height=40&width=40",
-    cvUrl: "/placeholder.svg?height=100&width=100&text=CV",
-    diplomaUrl: "/placeholder.svg?height=100&width=100&text=Diploma",
-    status: 'rejected'
-  },
-  // Add more posts as needed
-]
+import { useSession } from "next-auth/react"
+import { redirect } from "next/navigation"
+import { useGetAllRequests } from "@/hooks/useGetAllRequests"
+import { toast } from "@/hooks/use-toast"
+import PendingRequests from "./pending-requests"
+import ApprovedRequests from "./approved-requests"
+import RejectedRequests from "./rejected-requests"
+import { RequestWithUserDetails } from "../types/requestWithUserDetails"
 
 export default function DashboardPage() {
+  const requests: RequestWithUserDetails[] = useGetAllRequests().data
+  const { error, isLoading } = useGetAllRequests()
+
+  const { data: session } = useSession()
+  const userRole = session?.user.role
+
+  if (!session || userRole !== "ADMIN") redirect("/")
+
   const [activeTab, setActiveTab] = useState("pending")
-  const [posts, setPosts] = useState(allPosts)
 
-  const pendingPosts = posts.filter(post => post.status === 'pending')
-  const approvedPosts = posts.filter(post => post.status === 'approved')
-  const rejectedPosts = posts.filter(post => post.status === 'rejected')
+  const pendingRequests = requests?.filter((req) => req.state === "PENDING")
+  const approvedRequests = requests?.filter((req) => req.state === "APPROVED")
+  const rejectedRequests = requests?.filter((req) => req.state === "REJECTED")
 
-  const handleStatusChange = (postId: number, newStatus: 'approved' | 'rejected') => {
-    setPosts(posts.map(post => 
-      post.id === postId ? { ...post, status: newStatus } : post
-    ))
-  }
-
+  if (isLoading) return <div>Loading...</div>
+  if (error)
+    toast({
+      title: "Error",
+      description: "Failed to get requests",
+      variant: "destructive",
+    })
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
@@ -71,16 +43,15 @@ export default function DashboardPage() {
           <TabsTrigger value="rejected">Rejected</TabsTrigger>
         </TabsList>
         <TabsContent value="pending">
-          <PendingPosts posts={pendingPosts} onStatusChange={handleStatusChange} />
+          <PendingRequests requests={pendingRequests} />
         </TabsContent>
         <TabsContent value="approved">
-          <ApprovedPosts posts={approvedPosts} />
+          <ApprovedRequests requests={approvedRequests} />
         </TabsContent>
         <TabsContent value="rejected">
-          <RejectedPosts posts={rejectedPosts} />
+          <RejectedRequests requests={rejectedRequests} />
         </TabsContent>
       </Tabs>
     </div>
   )
 }
-
