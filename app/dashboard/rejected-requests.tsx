@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { RequestWithUserDetails } from "../types/requestWithUserDetails"
+import { RequestWithUserDetails } from "../types/types"
 import Image from "next/image"
 
 export default function RejectedRequests({
@@ -25,7 +25,7 @@ export default function RejectedRequests({
                 />
                 <AvatarFallback>{req.userDetails?.name?.charAt(0)}</AvatarFallback>
               </Avatar>
-              <span>{req.userId}</span>
+              <span>{req.userDetails?.name}</span>
             </CardTitle>
           </CardHeader>
           <CardContent>

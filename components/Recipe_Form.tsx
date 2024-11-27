@@ -48,23 +48,21 @@ export default function Recipe_Form() {
     defaultValues: {
       name: "",
       description: "",
-      images: new Uint8Array(),
+      images: [] as Uint8Array[],
       ingredients: ["tomato"],
       instructions: "",
     },
   })
-
   const handleFileChange = async (files: File[]) => {
     setFiles(files)
-    if (files.length > 0) {
-      const file = files[0]
-      const imageBytes = await file.arrayBuffer()
-      form.setValue("images", new Uint8Array(imageBytes))
-    } else {
-      form.setValue("images", new Uint8Array())
-    }
+    const imageArrays = await Promise.all(
+      files.map(async (file) => {
+        const imageBytes = await file.arrayBuffer()
+        return new Uint8Array(imageBytes)
+      })
+    )
+    form.setValue("images", imageArrays)
   }
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await fetch("/api/createRecipe", {
@@ -74,7 +72,7 @@ export default function Recipe_Form() {
         },
         body: JSON.stringify(values),
       })
-      if (response.status == 200) {
+      if (response.status == 201) {
         toast({
           title: "Recipe created",
           description: "Your recipe has been created successfully.",
@@ -132,9 +130,7 @@ export default function Recipe_Form() {
                   {...field}
                 />
               </FormControl>
-              <FormDescription>
-                You can mention extra stuff about your recipe
-              </FormDescription>
+              <FormDescription>mention extra stuff about your recipe</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -197,7 +193,9 @@ export default function Recipe_Form() {
               <FormControl>
                 <TagInput value={field.value} onChange={field.onChange} />
               </FormControl>
-              <FormDescription>Select or add your ingredients</FormDescription>
+              <FormDescription>
+                Press &apos; Enter &apos; after each ingredient to save it
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

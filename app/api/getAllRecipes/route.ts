@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { NextResponse } from "next/server"
+import { prisma } from "@/lib/prisma"
 
 export async function GET() {
   try {
@@ -9,15 +9,17 @@ export async function GET() {
         name: true,
         description: true,
         images: true,
-        userId: true,
+        user: {
+          select: {
+            name: true,
+          },
+        },
       },
-    });
-    return NextResponse.json(recipes, { status: 200 });
+    })
+
+    return NextResponse.json(recipes, { status: 200 })
   } catch (error) {
-    console.error("Failed to fetch recipes", error);
-    return NextResponse.json(
-      { error: "Failed to fetch recipes" },
-      { status: 500 }
-    );
+    console.error("Failed to fetch recipes", error)
+    return NextResponse.json({ error: "Failed to fetch recipes" }, { status: 500 })
   }
 }

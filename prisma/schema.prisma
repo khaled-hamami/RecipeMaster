@@ -51,7 +51,7 @@ model Recipe {
   id           String   @id @default(cuid())
   name         String
   description  String
-  images       Bytes
+  images       Bytes[]
   ingredients  String[]
   instructions String
   userId       String

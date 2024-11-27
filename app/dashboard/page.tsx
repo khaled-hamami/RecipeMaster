@@ -1,39 +1,56 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useSession } from "next-auth/react"
-import { redirect } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { useGetAllRequests } from "@/hooks/useGetAllRequests"
 import { toast } from "@/hooks/use-toast"
 import PendingRequests from "./pending-requests"
 import ApprovedRequests from "./approved-requests"
 import RejectedRequests from "./rejected-requests"
-import { RequestWithUserDetails } from "../types/requestWithUserDetails"
+import { RequestWithUserDetails } from "../types/types"
 import Navbar from "@/components/navbar"
 
-export default function DashboardPage() {
+export default function Page() {
   const requests: RequestWithUserDetails[] = useGetAllRequests().data
+  const router = useRouter()
   const { error, isLoading } = useGetAllRequests()
-
   const { data: session } = useSession()
   const userRole = session?.user.role
-
-  if (!session || userRole !== "ADMIN") redirect("/")
-
   const [activeTab, setActiveTab] = useState("pending")
 
-  const pendingRequests = requests?.filter((req) => req.state === "PENDING")
-  const approvedRequests = requests?.filter((req) => req.state === "APPROVED")
-  const rejectedRequests = requests?.filter((req) => req.state === "REJECTED")
+  useEffect(() => {
+    if (!session || userRole !== "ADMIN") {
+      router.push("/")
+    }
+  }, [session, userRole, router])
+
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to get requests",
+        variant: "destructive",
+      })
+    }
+  }, [error])
+
+  const pendingRequests = useMemo(
+    () => requests?.filter((req) => req.state === "PENDING"),
+    [requests]
+  )
+  const approvedRequests = useMemo(
+    () => requests?.filter((req) => req.state === "APPROVED"),
+    [requests]
+  )
+  const rejectedRequests = useMemo(
+    () => requests?.filter((req) => req.state === "REJECTED"),
+    [requests]
+  )
 
   if (isLoading) return <div>Loading...</div>
-  if (error)
-    toast({
-      title: "Error",
-      description: "Failed to get requests",
-      variant: "destructive",
-    })
+
   return (
     <div className="w-full bg-primary-to-white from-primary to-white min-h-screen">
       <div className="container mx-auto p-6">

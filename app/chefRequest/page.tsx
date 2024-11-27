@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -29,9 +29,11 @@ import Navbar from "@/components/navbar"
 export default function Page() {
   const router = useRouter()
   const { toast } = useToast()
+
   const [cvFile, setCvFile] = useState<File[] | null>(null)
   const [diplomaFile, setDiplomaFile] = useState<File[] | null>(null)
 
+  // dropzone configuration for file upload
   const dropZoneConfig = {
     maxFiles: 5,
     maxSize: 1024 * 1024 * 4,
@@ -41,6 +43,7 @@ export default function Page() {
     },
   }
 
+  // react-hook-form configuration with zod
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,24 +52,33 @@ export default function Page() {
     },
   })
 
-  const handleCvFileChange = async (files: File[]) => {
-    setCvFile(files)
-    if (files.length > 0) {
-      const file = files[0]
-      const data = await file.arrayBuffer()
-      form.setValue("cv", new Uint8Array(data))
-    }
-  }
+  // handle file change and set the file to the form value as Uint8Array
+  const handleCvFileChange = useCallback(
+    async (files: File[]) => {
+      setCvFile(files)
+      if (files.length > 0) {
+        const file = files[0]
+        const data = await file.arrayBuffer()
+        form.setValue("cv", new Uint8Array(data))
+      }
+    },
+    [form]
+  )
 
-  const handleDiplomaFileChange = async (files: File[]) => {
-    setDiplomaFile(files)
-    if (files.length > 0) {
-      const file = files[0]
-      const data = await file.arrayBuffer()
-      form.setValue("diploma", new Uint8Array(data))
-    }
-  }
+  // handle file change and set the file to the form value as Uint8Array
+  const handleDiplomaFileChange = useCallback(
+    async (files: File[]) => {
+      setDiplomaFile(files)
+      if (files.length > 0) {
+        const file = files[0]
+        const data = await file.arrayBuffer()
+        form.setValue("diploma", new Uint8Array(data))
+      }
+    },
+    [form]
+  )
 
+  // form submission handler
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       console.log(values)
@@ -82,7 +94,6 @@ export default function Page() {
           title: "Chef Request Submitted",
           description:
             "Your Chef request has been submited successfully, please wait for admin to verify it.",
-          className: "bg-primary",
         })
         router.push("/profile")
       } else {
@@ -116,7 +127,9 @@ export default function Page() {
             name="cv"
             render={() => (
               <FormItem>
-                <FormLabel>Select File</FormLabel>
+                <FormLabel>
+                  Upload your <b>CV</b> image.
+                </FormLabel>
                 <FormControl>
                   <FileUploader
                     value={cvFile}
@@ -167,7 +180,9 @@ export default function Page() {
             name="diploma"
             render={() => (
               <FormItem>
-                <FormLabel>Select File</FormLabel>
+                <FormLabel>
+                  Upload your <b>DIPLOMA</b> image.
+                </FormLabel>
                 <FormControl>
                   <FileUploader
                     value={diplomaFile}

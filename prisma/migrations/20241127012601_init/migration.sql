@@ -1,6 +1,22 @@
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('ADMIN', 'USER', 'CHEF');
 
+-- CreateEnum
+CREATE TYPE "State" AS ENUM ('PENDING', 'APPROVED', 'REJECTED');
+
+-- CreateTable
+CREATE TABLE "Request" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "diplomas" BYTEA NOT NULL,
+    "cv" BYTEA NOT NULL,
+    "state" "State" NOT NULL DEFAULT 'PENDING',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Request_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -9,8 +25,6 @@ CREATE TABLE "User" (
     "emailVerified" TIMESTAMP(3),
     "image" TEXT,
     "role" "Role" NOT NULL DEFAULT 'USER',
-    "diplomas" BYTEA,
-    "cv" BYTEA,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -22,7 +36,7 @@ CREATE TABLE "Recipe" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "image" BYTEA NOT NULL,
+    "images" BYTEA[],
     "ingredients" TEXT[],
     "instructions" TEXT NOT NULL,
     "userId" TEXT NOT NULL,

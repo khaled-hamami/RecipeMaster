@@ -11,15 +11,17 @@ import {
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ConfirmationModal } from "./confirmation-model"
-import { RequestWithUserDetails } from "../types/requestWithUserDetails"
+import { RequestWithUserDetails } from "../types/types"
 import Image from "next/image"
 import { toast } from "@/hooks/use-toast"
+import { useQueryClient } from "@tanstack/react-query"
 
 export default function PendingRequests({
   requests,
 }: {
   requests: RequestWithUserDetails[]
 }) {
+  const queryClient = useQueryClient()
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false)
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false)
   const [selectedReqId, setSelectedReqId] = useState<string | null>(null)
@@ -43,12 +45,13 @@ export default function PendingRequests({
           "Content-Type": "application/json",
         },
       })
-      if (response.status === 200)
+      if (response.status === 200) {
         toast({
           title: "Success",
           description: "Request approved",
         })
-      else
+        queryClient.invalidateQueries({ queryKey: ["allRequests"] })
+      } else
         toast({
           title: "Error",
           description: "Failed to approve request",
@@ -67,12 +70,13 @@ export default function PendingRequests({
           "Content-Type": "application/json",
         },
       })
-      if (response.status === 200)
+      if (response.status === 200) {
         toast({
           title: "Success",
           description: "Request rejected",
         })
-      else
+        queryClient.invalidateQueries({ queryKey: ["allRequests"] })
+      } else
         toast({
           title: "Error",
           description: "Failed to reject request",
@@ -137,15 +141,15 @@ export default function PendingRequests({
         isOpen={isApproveModalOpen}
         onClose={() => setIsApproveModalOpen(false)}
         onConfirm={confirmApprove}
-        title="Approve Post"
-        message="Are you sure you want to approve this post?"
+        title="Approve Chef Request"
+        message="Are you sure you wan to approve this chef request?"
       />
       <ConfirmationModal
         isOpen={isRejectModalOpen}
         onClose={() => setIsRejectModalOpen(false)}
         onConfirm={confirmReject}
-        title="Reject Post"
-        message="Are you sure you want to reject this post?"
+        title="Reject Chef Request"
+        message="Are you sure you want to reject this chef request?"
       />
     </div>
   )

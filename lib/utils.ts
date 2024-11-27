@@ -4,3 +4,25 @@ import { twMerge } from "tailwind-merge"
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
+
+/**
+ * Converts a Buffer to a Base64 encoded string.
+ *
+ * @param {Buffer} image - The image data as a Buffer.
+ * @returns {string} - The Base64 encoded image string prefixed with 'data:image/png;base64,'.
+ */
+export const convertImageToBase64 = (image: Buffer): string => {
+  return `data:image/png;base64,${image.toString("base64")}`
+}
+
+/**
+ * Truncates a given text to a specified maximum length and appends ellipsis if necessary.
+ *
+ * @param {string} text - The text to be truncated.
+ * @param {number} maxLength - The maximum length of the truncated text.
+ * @returns {string} - The truncated text with ellipsis if it exceeds the maximum length.
+ */
+export const truncateText = (text: string, maxLength: number): string => {
+  if (text.length <= maxLength) return text
+  return text.substr(0, maxLength) + "..."
+}
