@@ -6,8 +6,10 @@ import prisma from "@/lib/prisma"
 import { convertImageToBase64 } from "@/lib/utils"
 import Image from "next/image"
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const { id } = params
+type Params = Promise<{ id: string }>
+
+export default async function Page({ params }: { params: Params }) {
+  const { id } = await params
 
   let recipe: RecipeWithChefName | null = null
 

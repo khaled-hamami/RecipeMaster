@@ -21,11 +21,6 @@ export const metadata: Metadata = {
   description: "A comprehensive app for all your recipe needs",
   authors: [{ name: "Khaled Hammami", url: "https://khaledhm.tn" }],
   keywords: "Recipe, Cooking, Chef, Food, Next.js, React, TypeScript",
-  viewport: "width=device-width, initial-scale=1",
-  themeColor: "#ffffff",
-  icons: {
-    icon: "/favicon.ico",
-  },
 }
 
 export default function RootLayout({
