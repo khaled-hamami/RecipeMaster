@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/7317ef8c-1b5c-4333-a111-30dd238da352)This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 # RECIPE MASTER
 
@@ -77,7 +77,7 @@ public:/ static files
 ## Hosted Website
 
 You can view the hosted app @ [Recipe-Master.KhaledHm.tn](https://recipe-master.khaledhm.tn).
-![Recipe Master Screenshot](./public/images/sc1.png)
+![image](https://github.com/user-attachments/assets/7317ef8c-1b5c-4333-a111-30dd238da352)
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
