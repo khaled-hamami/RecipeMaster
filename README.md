@@ -1,5 +1,6 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+# RECIPE MASTER
 
 ## Introduction
 Welcome to the Recipe Master project! This is a web application built with Next.js, a powerful React framework for building server-side rendered and statically generated web applications. The project was bootstrapped with create-next-app, providing a solid foundation for developing modern web applications.
