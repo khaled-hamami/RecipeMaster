@@ -76,7 +76,7 @@ public:/ static files
 
 ## Hosted Website
 
-You can view the hosted app @ [Recipe-Master.KhaledHm.tn](https://your-website-url.com).
+You can view the hosted app @ [Recipe-Master.KhaledHm.tn](https://recipe-master.khaledhm.tn).
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
