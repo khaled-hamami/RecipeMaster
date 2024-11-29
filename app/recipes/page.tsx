@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation"
 import { convertImageToBase64, truncateText } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 import { toast } from "@/hooks/use-toast"
+import Loading from "@/components/loading"
 
 export default function RecipePage() {
   const [filter, setFilter] = useState("")
@@ -66,7 +67,7 @@ export default function RecipePage() {
   )
 
   if (status === "loading" || isLoading) {
-    return <div>Loading...</div>
+    return <Loading />
   }
 
   if (error) {

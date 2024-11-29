@@ -43,6 +43,7 @@ export default function Recipe_Form() {
     },
   }
 
+  // react-hook-form configuration with zod
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -53,7 +54,16 @@ export default function Recipe_Form() {
       instructions: "",
     },
   })
-  const handleFileChange = async (files: File[]) => {
+
+  //
+  /**
+   * Handles the file change event by converting the selected files into byte arrays
+   * and setting them in the form's "images" field.
+   *
+   * @param {File[]} files - An array of selected files.
+   * @returns {Promise<void>} A promise that resolves when the files have been processed and set in the form.
+   */
+  const handleFileChange = async (files: File[]): Promise<void> => {
     setFiles(files)
     const imageArrays = await Promise.all(
       files.map(async (file) => {
@@ -63,6 +73,8 @@ export default function Recipe_Form() {
     )
     form.setValue("images", imageArrays)
   }
+
+  //handle the recipe form submission
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await fetch("/api/createRecipe", {

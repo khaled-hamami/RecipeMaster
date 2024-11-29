@@ -11,6 +11,7 @@ import ApprovedRequests from "./approved-requests"
 import RejectedRequests from "./rejected-requests"
 import { RequestWithUserDetails } from "../types/types"
 import Navbar from "@/components/navbar"
+import Loading from "@/components/loading"
 
 export default function Page() {
   const requests: RequestWithUserDetails[] = useGetAllRequests().data
@@ -49,7 +50,7 @@ export default function Page() {
     [requests]
   )
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) return <Loading />
 
   return (
     <div className="w-full bg-primary-to-white from-primary to-white min-h-screen">

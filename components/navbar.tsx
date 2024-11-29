@@ -63,6 +63,7 @@ const Navbar = () => {
         <Button
           className="mr-5"
           onClick={() => {
+            //uses the signOut function from next-auth
             signOut()
           }}
         >

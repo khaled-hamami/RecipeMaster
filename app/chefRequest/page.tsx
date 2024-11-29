@@ -26,6 +26,7 @@ import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
 import Navbar from "@/components/navbar"
 
+//didnt extract the forms to a separate components because the form schema will be seperated from each form file input => double schema and more complexity
 export default function Page() {
   const router = useRouter()
   const { toast } = useToast()

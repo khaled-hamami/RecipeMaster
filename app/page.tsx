@@ -6,6 +6,7 @@ import { redirect } from "next/navigation"
 export default async function Page() {
   const session = await auth()
 
+  // If the user is already logged in, redirect to the recipes page
   if (session && session.user) {
     return redirect("/recipes")
   }
@@ -26,6 +27,7 @@ export default async function Page() {
           <form
             className="space-y-4"
             action={async () => {
+              // new next js server action feature. only in server side rendering
               "use server"
               await signIn("google", { redirectTo: "/recipes" })
             }}

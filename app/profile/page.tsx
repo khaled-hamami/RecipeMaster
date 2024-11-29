@@ -20,6 +20,7 @@ import { useDeleteRecipe } from "@/hooks/useDeleteRecipe"
 import { useGetUserRecipes } from "@/hooks/useGetUserRecipes"
 import { toast } from "@/hooks/use-toast"
 import EditProfileTab from "./EditProfileTab"
+import Loading from "@/components/loading"
 
 export default function ProfilePage() {
   type recipeType = {
@@ -38,6 +39,7 @@ export default function ProfilePage() {
     }
   }, [session])
 
+  //uses custom hook with tanstack-query to delete recipe
   const deleteRecipeMutation = useDeleteRecipe()
   const {
     data: userRecipes,
@@ -56,7 +58,7 @@ export default function ProfilePage() {
   }, [recipesError])
 
   if (status === "loading") {
-    return <div>Loading...</div>
+    return <Loading />
   }
   if (!session) redirect("/")
 

@@ -3,13 +3,12 @@ import Navbar from "@/components/navbar"
 import Recipe_Form from "@/components/Recipe_Form"
 import { useSession } from "next-auth/react"
 import { redirect } from "next/navigation"
+import Loading from "@/components/loading"
 
 export default function Page() {
   const { data: session, status } = useSession()
 
-  if (status === "loading") {
-    return <div>Loading...</div>
-  }
+  if (status === "loading") return <Loading />
 
   if (!session || session.user.role !== "CHEF") redirect("/")
 
