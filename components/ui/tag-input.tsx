@@ -1,9 +1,9 @@
-import React from "react";
-import { TagsInput } from "react-tag-input-component";
-import "@/app/globals.css";
+import React from "react"
+import { TagsInput } from "react-tag-input-component"
+import "@/app/globals.css"
 interface TagInputProps {
-  value: string[];
-  onChange: (value: string[]) => void;
+  value: string[]
+  onChange: (value: string[]) => void
 }
 
 const TagInput: React.FC<TagInputProps> = ({ value, onChange }) => {
@@ -17,11 +17,10 @@ const TagInput: React.FC<TagInputProps> = ({ value, onChange }) => {
         classNames={{
           input: "tagsInput",
           tag: "tag",
-          tagRemove: "tagRemove",
         }}
       />
     </div>
-  );
-};
+  )
+}
 
-export default TagInput;
+export default TagInput
