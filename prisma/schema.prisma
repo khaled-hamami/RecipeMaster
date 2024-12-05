@@ -48,6 +48,7 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
+
 model Recipe {
   id           String   @id @default(cuid())
   name         String

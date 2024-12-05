@@ -62,10 +62,14 @@ export default function RecipePage() {
   }, [fetchRecipes])
 
   //filter by name
+  // const filteredRecipes = recipes.filter((recipe) =>
+  //   recipe.name.toLowerCase().includes(filter.toLowerCase())
+  // )
+  // filter by name or chef name
   const filteredRecipes = recipes.filter((recipe) =>
-    recipe.name.toLowerCase().includes(filter.toLowerCase())
+    recipe.name.toLowerCase().includes(filter.toLowerCase()) ||
+    recipe.user.name.toLowerCase().includes(filter.toLowerCase())
   )
-
   if (status === "loading" || isLoading) {
     return <Loading />
   }
