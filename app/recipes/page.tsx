@@ -12,6 +12,7 @@ import { convertImageToBase64, truncateText } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 import { toast } from "@/hooks/use-toast"
 import Loading from "@/components/loading"
+import { useDeleteRecipe } from "@/hooks/useDeleteRecipe"
 
 export default function RecipePage() {
   const [filter, setFilter] = useState("")
@@ -20,6 +21,8 @@ export default function RecipePage() {
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
   const { data: session, status } = useSession()
+
+  const deleteRecipeMutation = useDeleteRecipe()
 
   type recipeType = {
     id: string
@@ -61,14 +64,11 @@ export default function RecipePage() {
     fetchRecipes()
   }, [fetchRecipes])
 
-  //filter by name
-  // const filteredRecipes = recipes.filter((recipe) =>
-  //   recipe.name.toLowerCase().includes(filter.toLowerCase())
-  // )
-  // filter by name or chef name
-  const filteredRecipes = recipes.filter((recipe) =>
-    recipe.name.toLowerCase().includes(filter.toLowerCase()) ||
-    recipe.user.name.toLowerCase().includes(filter.toLowerCase())
+  // filter recipes by name or chef name
+  const filteredRecipes = recipes.filter(
+    (recipe) =>
+      recipe.name.toLowerCase().includes(filter.toLowerCase()) ||
+      recipe.user.name.toLowerCase().includes(filter.toLowerCase())
   )
   if (status === "loading" || isLoading) {
     return <Loading />
@@ -133,6 +133,17 @@ export default function RecipePage() {
                   >
                     View Details
                   </Button>
+                  {session?.user?.role === "ADMIN" && (
+                    <Button
+                      className="ml-4 bg-destructive"
+                      onClick={() => {
+                        deleteRecipeMutation.mutate(recipe.id)
+                        window.location.reload()
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
