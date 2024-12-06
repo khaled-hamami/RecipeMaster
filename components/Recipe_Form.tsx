@@ -90,6 +90,12 @@ export default function Recipe_Form() {
           description: "Your recipe has been created successfully.",
         })
         router.push("/profile")
+      } else if (response.status == 413) {
+        toast({
+          title: "Failed to create recipe",
+          description: "The images you uploaded are too large.",
+          variant: "destructive",
+        })
       } else {
         toast({
           title: "Failed to create recipe",
